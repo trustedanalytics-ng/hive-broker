@@ -4,11 +4,11 @@ import java.util.Objects;
 
 public final class PrincipalNameNormalizer implements NameNormalizer {
 
-  public static PrincipalNameNormalizer create() {
-    return new PrincipalNameNormalizer();
+  private PrincipalNameNormalizer() {
   }
 
-  private PrincipalNameNormalizer() {
+  public static PrincipalNameNormalizer create() {
+    return new PrincipalNameNormalizer();
   }
 
   @Override

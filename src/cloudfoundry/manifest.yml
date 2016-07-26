@@ -21,4 +21,4 @@ applications:
     CF_CATALOG_SERVICENAME: hive
     CF_CATALOG_SERVICEID: hive
     TAGS: hive
-    VERSION: 0.4.0
+    VERSION: ${version}

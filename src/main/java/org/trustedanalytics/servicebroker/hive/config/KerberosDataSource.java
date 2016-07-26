@@ -34,9 +34,8 @@ import javax.sql.DataSource;
 
 public final class KerberosDataSource extends AbstractDataSource implements DataSource {
 
-  String JDBC_DRIVER = "org.apache.hive.jdbc.HiveDriver";
-  private static final String
-      TICKET_CACHE_PATH_PARAM = "hadoop.security.kerberos.ticket.cache.path";
+  private static final String JDBC_DRIVER = "org.apache.hive.jdbc.HiveDriver";
+  private static final String TICKET_CACHE_PATH_PARAM = "hadoop.security.kerberos.ticket.cache.path";
 
   private final String jdbcUrl;
   private final String user;
@@ -93,11 +92,11 @@ public final class KerberosDataSource extends AbstractDataSource implements Data
     private Configuration hadoopConf;
     private String user;
 
-    static Builder create() {
-      return new Builder();
+    private Builder() {
     }
 
-    private Builder() {
+    static Builder create() {
+      return new Builder();
     }
 
     KerberosDataSource build() {

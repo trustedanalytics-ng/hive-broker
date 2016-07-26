@@ -117,7 +117,6 @@ public class KerberosDataSourceTest {
         .useKeyTab("/some/path/to/keytab.file")
         .with(hadoopConf)
         .with(loginManager).build();
-    ((KerberosDataSource)ds).JDBC_DRIVER = MockedJdbcDriver.class.getCanonicalName();
 
     //when
     Connection conn = ds.getConnection();

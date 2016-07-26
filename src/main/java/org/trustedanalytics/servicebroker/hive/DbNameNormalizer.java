@@ -19,11 +19,11 @@ import java.util.Objects;
 
 public final  class DbNameNormalizer implements NameNormalizer {
 
-  public static DbNameNormalizer create() {
-    return new DbNameNormalizer();
+  private DbNameNormalizer() {
   }
 
-  private DbNameNormalizer() {
+  public static DbNameNormalizer create() {
+    return new DbNameNormalizer();
   }
 
   @Override
