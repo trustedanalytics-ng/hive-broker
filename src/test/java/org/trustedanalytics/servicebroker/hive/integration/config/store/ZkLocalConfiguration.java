@@ -17,6 +17,8 @@ package org.trustedanalytics.servicebroker.hive.integration.config.store;
 
 import java.io.IOException;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.curator.test.TestingServer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +30,6 @@ import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClientBuil
 import org.trustedanalytics.servicebroker.framework.Qualifiers;
 import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperCredentials;
 import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperTestOperations;
-
-import javax.validation.constraints.NotNull;
 
 @Configuration
 public class ZkLocalConfiguration {

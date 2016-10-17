@@ -13,6 +13,9 @@
  */
 package org.trustedanalytics.servicebroker.hive.config;
 
+import java.io.IOException;
+import java.sql.Driver;
+
 import org.apache.hive.jdbc.HiveDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +26,9 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.trustedanalytics.hadoop.config.client.AppConfiguration;
-import org.trustedanalytics.hadoop.config.client.Property;
-import org.trustedanalytics.hadoop.config.client.ServiceInstanceConfiguration;
-import org.trustedanalytics.hadoop.config.client.ServiceType;
 import org.trustedanalytics.hadoop.kerberos.KrbLoginManagerFactory;
+import org.trustedanalytics.servicebroker.framework.kerberos.KerberosProperties;
 import org.trustedanalytics.servicebroker.hive.plans.binding.HiveBindingClient;
-
-import java.io.IOException;
-import java.sql.Driver;
 
 @Configuration
 public class ServiceInstanceProvisioningConfig {
@@ -45,7 +43,10 @@ public class ServiceInstanceProvisioningConfig {
   private ExternalConfiguration configuration;
 
   @Autowired
-  public AppConfiguration environment;
+  private KerberosProperties kerberosProperties;
+
+  @Autowired
+  private org.apache.hadoop.conf.Configuration hadoopConfiguration;
 
   @Bean
   public Driver jdbcHiveDriver() {
@@ -56,23 +57,19 @@ public class ServiceInstanceProvisioningConfig {
   public JdbcOperations hiveOperations(Driver driver) throws IOException {
     String hiveUrl = hiveClient.getConnectionUrl();
     LOGGER.info("Creating jdbc template for url: " + hiveUrl);
-    if(!hiveClient.isKerberosEnabled()) {
+    if (!hiveClient.isKerberosEnabled()) {
       return new JdbcTemplate(new SimpleDriverDataSource(driver, hiveUrl));
     }
     return kerberizedHiveOperations(hiveUrl);
   }
 
   private JdbcOperations kerberizedHiveOperations(String hiveUrl) throws IOException {
-    ServiceInstanceConfiguration kerberosServiceConfiguration =
-        environment.getServiceConfig(ServiceType.KERBEROS_TYPE);
-    final String kdc = kerberosServiceConfiguration.getProperty(Property.KRB_KDC).get();
-    final String realm = kerberosServiceConfiguration.getProperty(Property.KRB_REALM).get();
-    KerberosDataSource dataSource = KerberosDataSource.Builder.create()
-        .connectTo(hiveUrl)
+    KerberosDataSource dataSource = KerberosDataSource.Builder.create().connectTo(hiveUrl)
         .asWho(configuration.getHiveSuperUser())
         .useKeyTab(configuration.getKeyTabLocation())
-        .with(configuration.hiveConfigAsHadoopConfig())
-        .with(KrbLoginManagerFactory.getInstance().getKrbLoginManagerInstance(kdc, realm))
+        .with(hadoopConfiguration)
+        .with(KrbLoginManagerFactory.getInstance()
+            .getKrbLoginManagerInstance(kerberosProperties.getKdc(), kerberosProperties.getRealm()))
         .build();
     return new JdbcTemplate(dataSource);
   }

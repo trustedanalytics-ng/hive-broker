@@ -1,47 +1,48 @@
 /**
  * Copyright (c) 2015 Intel Corporation
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.trustedanalytics.servicebroker.hive.config;
+
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.sql.Driver;
+import java.util.Optional;
 
 import org.apache.hadoop.conf.Configuration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 import org.trustedanalytics.hadoop.config.client.AppConfiguration;
 import org.trustedanalytics.hadoop.config.client.Property;
 import org.trustedanalytics.hadoop.config.client.ServiceInstanceConfiguration;
 import org.trustedanalytics.hadoop.config.client.ServiceType;
+import org.trustedanalytics.servicebroker.framework.kerberos.KerberosProperties;
 import org.trustedanalytics.servicebroker.hive.MockedJdbcDriver;
 import org.trustedanalytics.servicebroker.hive.plans.binding.HiveBindingClient;
 
-import java.io.IOException;
-import java.sql.Driver;
-import java.util.Optional;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {ServiceInstanceProvisioningConfig.class,
-                                           ServiceInstanceProvisioningConfigTest.UnitTestsConfig.class})
+    ServiceInstanceProvisioningConfigTest.UnitTestsConfig.class})
+@ActiveProfiles("integration-test")
 public class ServiceInstanceProvisioningConfigTest {
 
   @Autowired
@@ -70,7 +71,6 @@ public class ServiceInstanceProvisioningConfigTest {
       ExternalConfiguration mocked = Mockito.mock(ExternalConfiguration.class);
       when(mocked.getHiveSuperUser()).thenReturn("jojo");
       when(mocked.getKeyTabLocation()).thenReturn("/tmp/jojo.keytab");
-      when(mocked.hiveConfigAsHadoopConfig()).thenReturn(new Configuration(false));
       return mocked;
     }
 
@@ -83,14 +83,23 @@ public class ServiceInstanceProvisioningConfigTest {
           .thenReturn(Optional.of("localhost"));
       when(mockedKrbConfiguration.getProperty(Property.KRB_REALM))
           .thenReturn(Optional.of("CLOUDERA"));
-      when(mocked.getServiceConfig(ServiceType.KERBEROS_TYPE))
-          .thenReturn(mockedKrbConfiguration);
+      when(mocked.getServiceConfig(ServiceType.KERBEROS_TYPE)).thenReturn(mockedKrbConfiguration);
       return mocked;
     }
 
     @Bean
     public Driver driver() {
       return new MockedJdbcDriver();
+    }
+
+    @Bean
+    public KerberosProperties getKerberosProperties() {
+      return new KerberosProperties("kdc", "realm");
+    }
+
+    @Bean
+    public static Configuration getHadoopConfiguration() {
+      return new Configuration();
     }
 
   }

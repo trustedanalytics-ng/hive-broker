@@ -15,7 +15,7 @@
  */
 package org.trustedanalytics.servicebroker.hive.integration.config.store;
 
-import com.google.common.collect.ImmutableList;
+import java.security.MessageDigest;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -25,7 +25,7 @@ import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Id;
 import org.springframework.security.crypto.codec.Base64;
 
-import java.security.MessageDigest;
+import com.google.common.collect.ImmutableList;
 
 public class ZkStoreTestUtils {
 

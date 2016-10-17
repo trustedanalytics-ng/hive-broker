@@ -19,11 +19,9 @@ package org.trustedanalytics.servicebroker.hive.integration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceRequest;
-import org.cloudfoundry.community.servicebroker.model.DeleteServiceInstanceRequest;
-import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
-import org.cloudfoundry.community.servicebroker.model.ServiceInstanceBinding;
+import java.util.UUID;
+
+import org.cloudfoundry.community.servicebroker.model.*;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
 import org.junit.Rule;
@@ -37,13 +35,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.trustedanalytics.servicebroker.hive.config.Application;
 import org.trustedanalytics.servicebroker.hive.config.ExternalConfiguration;
+import org.trustedanalytics.servicebroker.hive.integration.config.HadoopTestConfiguration;
 import org.trustedanalytics.servicebroker.hive.integration.config.kerberos.IntegrationTestsConfiguration;
 import org.trustedanalytics.servicebroker.hive.integration.config.store.ZkLocalConfiguration;
 
-import java.util.UUID;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class,
+@SpringApplicationConfiguration(classes = {Application.class, HadoopTestConfiguration.class,
                                            IntegrationTestsConfiguration.class,
                                            ZkLocalConfiguration.class})
 @IntegrationTest("server.port=0")

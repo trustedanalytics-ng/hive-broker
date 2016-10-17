@@ -15,11 +15,7 @@
  */
 package org.trustedanalytics.servicebroker.hive;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
+import java.sql.*;
 
 public class MockStatement implements Statement {
 

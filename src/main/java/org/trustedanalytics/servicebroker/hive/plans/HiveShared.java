@@ -15,6 +15,10 @@
  */
 package org.trustedanalytics.servicebroker.hive.plans;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.exception.ServiceInstanceExistsException;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
@@ -24,9 +28,6 @@ import org.springframework.stereotype.Component;
 import org.trustedanalytics.servicebroker.framework.service.ServicePlanDefinition;
 import org.trustedanalytics.servicebroker.hive.DbNameNormalizer;
 import org.trustedanalytics.servicebroker.hive.plans.binding.HiveBindingClient;
-
-import java.util.Map;
-import java.util.UUID;
 
 @Component("shared")
 class HiveShared implements ServicePlanDefinition {
@@ -47,7 +48,7 @@ class HiveShared implements ServicePlanDefinition {
   }
 
   @Override
-  public void provision(ServiceInstance serviceInstance)
+  public void provision(ServiceInstance serviceInstance, Optional<Map<String, Object>> parameters)
       throws ServiceInstanceExistsException, ServiceBrokerException {
     operations.execute(String.format("create database if not exists `%s`",
                                      DbNameNormalizer.create().

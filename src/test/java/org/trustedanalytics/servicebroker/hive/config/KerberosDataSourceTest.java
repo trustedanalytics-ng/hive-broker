@@ -15,20 +15,7 @@
  */
 package org.trustedanalytics.servicebroker.hive.config;
 
-import org.apache.hadoop.conf.Configuration;
-
-import org.hamcrest.core.IsInstanceOf;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import static org.mockito.Mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.trustedanalytics.hadoop.kerberos.KrbLoginManager;
-import org.trustedanalytics.servicebroker.hive.MockConnection;
-import org.trustedanalytics.servicebroker.hive.MockedJdbcDriver;
-
-import sun.security.krb5.KrbException;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -37,6 +24,18 @@ import java.sql.SQLException;
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginException;
 import javax.sql.DataSource;
+
+import org.apache.hadoop.conf.Configuration;
+import org.hamcrest.core.IsInstanceOf;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.trustedanalytics.hadoop.kerberos.KrbLoginManager;
+import org.trustedanalytics.servicebroker.hive.MockConnection;
+
+import sun.security.krb5.KrbException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KerberosDataSourceTest {

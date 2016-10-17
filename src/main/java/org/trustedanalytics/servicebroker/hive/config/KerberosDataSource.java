@@ -13,13 +13,6 @@
  */
 package org.trustedanalytics.servicebroker.hive.config;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.security.UserGroupInformation;
-import org.springframework.jdbc.datasource.AbstractDataSource;
-import org.trustedanalytics.hadoop.kerberos.KrbLoginManager;
-
-import sun.security.krb5.KrbException;
-
 import java.io.IOException;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -31,6 +24,13 @@ import java.util.Objects;
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginException;
 import javax.sql.DataSource;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.security.UserGroupInformation;
+import org.springframework.jdbc.datasource.AbstractDataSource;
+import org.trustedanalytics.hadoop.kerberos.KrbLoginManager;
+
+import sun.security.krb5.KrbException;
 
 public final class KerberosDataSource extends AbstractDataSource implements DataSource {
 

@@ -15,6 +15,11 @@
  */
 package org.trustedanalytics.servicebroker.hive.plans;
 
+import static org.mockito.Mockito.*;
+
+import java.util.Optional;
+import java.util.UUID;
+
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.exception.ServiceInstanceExistsException;
 import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceRequest;
@@ -26,13 +31,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.trustedanalytics.servicebroker.hive.plans.binding.HiveBindingClient;
-
-import java.util.UUID;
-
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HiveSharedTest {
@@ -64,7 +62,7 @@ public class HiveSharedTest {
     HiveShared toTest = new HiveShared(hiveBindingClient, jdbcOperations);
 
     //when
-    toTest.provision(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"));
+    toTest.provision(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"), Optional.empty());
 
     //then
     InOrder inOrder = inOrder(jdbcOperations);
@@ -83,7 +81,7 @@ public class HiveSharedTest {
     HiveShared toTest = new HiveShared(hiveBindingClient, jdbcOperations);
 
     //when
-    toTest.provision(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"));
+    toTest.provision(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"), Optional.empty());
 
     //then
     verify(jdbcOperations, only())

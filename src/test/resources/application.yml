@@ -3,17 +3,19 @@ security:
 #password cf client will use when interacting with broker
   user.password: ${user.password}
 hive:
-  #encoded hadoop configuration files for hive
-  provided.zip: ${hadoop.provided.zip:}
   server.host: ${HIVE_SERVER2_THRIFT_BIND_HOST:localhost}
   server.port: ${HIVE_SERVER2_THRIFT_PORT:10000}
   superuser.name: someuser
-  superuser.keytab: some_base64_encode_keytab
+  #path on container where keytab for hive is
+  superuser.keytab.path: /tmp
+  #path on container where configuration for hdfs is
+  configuration.path: /tmp
 store:
   #optional parameter to configure zookeeper-store
   path: ${broker.store.znode:/broker/hive/metadata}
   user: ${system.user:test}
   password: ${system.user.password:test1}
+  keytabPath: ${system.user.keytab.path:test1}
 cf:
   catalog:
     serviceName: ${cf.catalog.servicename:hive}
