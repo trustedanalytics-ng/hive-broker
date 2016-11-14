@@ -33,12 +33,16 @@ public class HivePlanMultitenantTest {
     // given
     String host = "jojoservice";
     String port = "10000";
+    String path = "/tmp";
+    String password = "test";
     String expected = "jdbc:hive2://jojoservice:10000/%{organization};"
-        + "principal=hive/jojoservice@CLOUDERA;auth=kerberos";
+        + "principal=hive/jojoservice@CLOUDERA;auth=kerberos;ssl=true;sslTrustStore=/tmp;trustStorePassword=test";
 
     ExternalConfiguration conf = new ExternalConfiguration();
     conf.setHiveServerHost(host);
     conf.setHiveServerPort(port);
+    conf.setHiveTrustStorePath(path);
+    conf.setHiveTrustStorePassword(password);
     HivePlanMultitenant plan = new HivePlanMultitenant(HiveBindingClientFactory.create(conf,
         HadoopTestConfiguration.getHadoopConfiguration(true, "hive/jojoservice@CLOUDERA")));
 

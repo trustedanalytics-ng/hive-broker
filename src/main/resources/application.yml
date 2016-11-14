@@ -10,6 +10,9 @@ hive:
   superuser.keytab.path: ${HIVE_SUPERUSER_KEYTAB_PATH:}
   #path on container where configuration for hdfs is
   configuration.path: ${hive.configuration.path:}
+  truststore:
+    path: ${cloudera.truststore:}
+    password: ${cloudera.truststore.password:}
 store:
   #optional parameter to configure zookeeper-store
   path: ${broker.store.znode:/broker/hive/metadata}

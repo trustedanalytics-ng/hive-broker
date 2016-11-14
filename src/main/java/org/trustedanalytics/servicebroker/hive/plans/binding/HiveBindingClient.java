@@ -37,17 +37,25 @@ public class HiveBindingClient
 
   private static final String AUTHENTICATION_METHOD_PROPERTY = "hadoop.security.authentication";
 
-  private static final String NO_NEEDED_KRB_PROPERTIES = "";
+  private static final String HIVE_SERVER2_SSL = "hive.server2.use.SSL";
+
+  private static final String NO_NEEDED_PROPERTIES = "";
 
   private Configuration hiveConfig;
 
   private String hiveServerHost;
+
+  private String hiveTrustStorePath;
+
+  private String hiveTrustStorePassword;
 
   private int hiveServerPort;
 
   @Autowired
   public HiveBindingClient(ExternalConfiguration configuration, Configuration hadoopConfiguration) throws IOException {
     this.hiveServerHost = configuration.getHiveServerHost();
+    this.hiveTrustStorePassword = configuration.getHiveTrustStorePassword();
+    this.hiveTrustStorePath = configuration.getHiveTrustStorePath();
     this.hiveServerPort = Integer.decode(configuration.getHiveServerPort());
     this.hiveConfig = hadoopConfiguration;
   }
@@ -58,7 +66,7 @@ public class HiveBindingClient
     String connectionUrl = String.format("jdbc:hive2://%s:%d/%%{organization}%s",
                                          this.hiveServerHost,
                                          this.hiveServerPort,
-                                         kerberosSpecific());
+                                         getSpecificOptions());
     credentials.put("connectionUrl", connectionUrl);
     return credentials;
   }
@@ -71,7 +79,7 @@ public class HiveBindingClient
                                          this.hiveServerHost,
                                          this.hiveServerPort,
                                          dbName,
-                                         kerberosSpecific());
+                                         getSpecificOptions());
     credentials.put("connectionUrl", connectionUrl);
     return credentials;
   }
@@ -80,16 +88,28 @@ public class HiveBindingClient
     return String.format("jdbc:hive2://%s:%d/%s",
                          this.hiveServerHost,
                          this.hiveServerPort,
-                         kerberosSpecific());
+                         getSpecificOptions());
   }
 
   public boolean isKerberosEnabled() {
     return AUTHENTICATION_METHOD.equals(hiveConfig.get(AUTHENTICATION_METHOD_PROPERTY));
   }
 
+  public boolean isSslEnabled() {
+    return hiveConfig.getBoolean(HIVE_SERVER2_SSL, true);
+  }
+
+  String sslSpecific() {
+    if (!isSslEnabled()) {
+      return NO_NEEDED_PROPERTIES;
+    }
+    return String.format(";ssl=true;sslTrustStore=%s;trustStorePassword=%s", hiveTrustStorePath,
+        hiveTrustStorePassword);
+  }
+
   String kerberosSpecific() {
     if (!isKerberosEnabled()) {
-      return NO_NEEDED_KRB_PROPERTIES;
+      return NO_NEEDED_PROPERTIES;
     }
     String hivePrincipal = hiveConfig.get(HIVE_SERVER_PRINCIPAL_PROPERTY_NAME);
     Preconditions.checkNotNull(hivePrincipal,
@@ -98,5 +118,9 @@ public class HiveBindingClient
                                              HIVE_SERVER_PRINCIPAL_PROPERTY_NAME));
     return String.format(";principal=%s;auth=kerberos",
                          hivePrincipal.replaceAll("_HOST", this.hiveServerHost));
+  }
+
+  String getSpecificOptions() {
+    return kerberosSpecific() + sslSpecific();
   }
 }

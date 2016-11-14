@@ -63,4 +63,12 @@ public class ExternalConfiguration {
   @NotNull
   private String configurationPath;
 
+  @Value("${hive.truststore.password}")
+  @NotNull
+  private String hiveTrustStorePassword;
+
+  @Value("${hive.truststore.path}")
+  @NotNull
+  private String hiveTrustStorePath;
+
 }
