@@ -16,8 +16,7 @@
 package org.trustedanalytics.servicebroker.hive.plans.binding;
 
 import java.util.Map;
-import java.util.UUID;
 
 public interface HiveSpecificOrgBindingOperations {
-    Map<String, Object> createCredentialsMap(UUID orgId);
+    Map<String, Object> createCredentialsMap(String orgId);
 }

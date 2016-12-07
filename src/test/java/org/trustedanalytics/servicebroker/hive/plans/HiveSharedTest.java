@@ -18,7 +18,6 @@ package org.trustedanalytics.servicebroker.hive.plans;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.exception.ServiceInstanceExistsException;
@@ -50,8 +49,7 @@ public class HiveSharedTest {
     toTest.bind(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"));
 
     //then
-    verify(hiveBindingClient).createCredentialsMap(
-        UUID.fromString("04d4e5d2-0568-11e6-8d01-00155d3d2c21"));
+    verify(hiveBindingClient).createCredentialsMap("04d4e5d2-0568-11e6-8d01-00155d3d2c21");
   }
 
   @Test

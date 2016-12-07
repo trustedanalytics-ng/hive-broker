@@ -17,7 +17,6 @@ package org.trustedanalytics.servicebroker.hive.plans;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.exception.ServiceInstanceExistsException;
@@ -43,8 +42,7 @@ class HiveShared implements ServicePlanDefinition {
 
   @Override
   public Map<String, Object> bind(ServiceInstance serviceInstance) throws ServiceBrokerException {
-    UUID serviceId = UUID.fromString(serviceInstance.getServiceInstanceId());
-    return bindingOperations.createCredentialsMap(serviceId);
+    return bindingOperations.createCredentialsMap(serviceInstance.getServiceInstanceId());
   }
 
   @Override

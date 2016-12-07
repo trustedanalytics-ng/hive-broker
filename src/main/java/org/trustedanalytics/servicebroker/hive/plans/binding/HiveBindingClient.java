@@ -16,7 +16,6 @@ package org.trustedanalytics.servicebroker.hive.plans.binding;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.hadoop.conf.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,8 @@ import org.trustedanalytics.servicebroker.hive.DbNameNormalizer;
 import org.trustedanalytics.servicebroker.hive.config.ExternalConfiguration;
 
 import com.google.common.base.Preconditions;
+
+import static java.util.Collections.singletonMap;
 
 @Component
 public class HiveBindingClient
@@ -72,16 +73,15 @@ public class HiveBindingClient
   }
 
   @Override
-  public Map<String, Object> createCredentialsMap(UUID serviceInstanceId) {
-    Map<String, Object> credentials = new HashMap<>();
-    String dbName = DbNameNormalizer.create().normalize(serviceInstanceId.toString());
+  public Map<String, Object> createCredentialsMap(String serviceInstanceId) {
+    String dbName = DbNameNormalizer.create().normalize(serviceInstanceId);
     String connectionUrl = String.format("jdbc:hive2://%s:%d/%s%s",
                                          this.hiveServerHost,
                                          this.hiveServerPort,
                                          dbName,
                                          getSpecificOptions());
-    credentials.put("connectionUrl", connectionUrl);
-    return credentials;
+
+    return singletonMap("connectionUrl", connectionUrl);
   }
 
   public String getConnectionUrl() {
