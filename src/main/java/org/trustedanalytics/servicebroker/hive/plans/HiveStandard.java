@@ -28,14 +28,14 @@ import org.trustedanalytics.servicebroker.framework.service.ServicePlanDefinitio
 import org.trustedanalytics.servicebroker.hive.DbNameNormalizer;
 import org.trustedanalytics.servicebroker.hive.plans.binding.HiveBindingClient;
 
-@Component("shared")
-class HiveShared implements ServicePlanDefinition {
+@Component("standard")
+class HiveStandard implements ServicePlanDefinition {
 
   private HiveBindingClient bindingOperations;
   private JdbcOperations operations;
 
   @Autowired
-  public HiveShared(HiveBindingClient bindingOperations, JdbcOperations operations) {
+  public HiveStandard(HiveBindingClient bindingOperations, JdbcOperations operations) {
     this.bindingOperations = bindingOperations;
     this.operations = operations;
   }

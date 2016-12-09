@@ -43,7 +43,7 @@ public class HiveSharedTest {
   @Test
   public void bindTest_createsCredentialsMap() throws ServiceBrokerException {
     //given
-    HiveShared toTest = new HiveShared(hiveBindingClient, jdbcOperations);
+    HiveStandard toTest = new HiveStandard(hiveBindingClient, jdbcOperations);
 
     //when
     toTest.bind(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"));
@@ -57,7 +57,7 @@ public class HiveSharedTest {
       throws ServiceBrokerException, ServiceInstanceExistsException {
     //given
     when(hiveBindingClient.isKerberosEnabled()).thenReturn(true);
-    HiveShared toTest = new HiveShared(hiveBindingClient, jdbcOperations);
+    HiveStandard toTest = new HiveStandard(hiveBindingClient, jdbcOperations);
 
     //when
     toTest.provision(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"), Optional.empty());
@@ -76,7 +76,7 @@ public class HiveSharedTest {
       throws ServiceBrokerException, ServiceInstanceExistsException {
     //given
     when(hiveBindingClient.isKerberosEnabled()).thenReturn(false);
-    HiveShared toTest = new HiveShared(hiveBindingClient, jdbcOperations);
+    HiveStandard toTest = new HiveStandard(hiveBindingClient, jdbcOperations);
 
     //when
     toTest.provision(getServiceInstance("04d4e5d2-0568-11e6-8d01-00155d3d2c21"), Optional.empty());

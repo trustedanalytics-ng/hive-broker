@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hive-broker</artifactId>
 
-    <version>0.6.2</version>
+    <version>0.6.3</version>
 
     <parent>
         <groupId>org.trustedanalytics</groupId>
@@ -18,10 +18,10 @@
         <cdhVersion>2.5.0-cdh5.3.2</cdhVersion>
         <hive.version>1.1.0-cdh5.7.1</hive.version>
         <start-class>org.trustedanalytics.servicebroker.hive.config.Application</start-class>
-        <jacoco-measurement-instructions>0.8400</jacoco-measurement-instructions>
-        <jacoco-measurement-branches>0.8400</jacoco-measurement-branches>
-        <jacoco-measurement-lines>0.8732</jacoco-measurement-lines>
-        <jacoco-measurement-classes>0.8300</jacoco-measurement-classes>
+        <jacoco-measurement-instructions>0.7200</jacoco-measurement-instructions>
+        <jacoco-measurement-branches>0.7400</jacoco-measurement-branches>
+        <jacoco-measurement-lines>0.7800</jacoco-measurement-lines>
+        <jacoco-measurement-classes>0.8100</jacoco-measurement-classes>
         <docker.imageName>${project.artifactId}</docker.imageName>
         <docker.registry>tapimages.us.enableiot.com:8080</docker.registry>
     </properties>

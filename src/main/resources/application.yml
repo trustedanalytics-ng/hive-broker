@@ -26,13 +26,9 @@ cf:
     serviceDescription: "Hive service allow to access hiveserver2 on hadoop cluster."
     baseId: ${BASE_GUID:}
     plans:
-      - id: shared-plan
-        name: shared
-        description: shared
-        free: true
-      - id: multitenant-plan
-        name: multitenant
-        description: multitenant
+      - id: standard-plan
+        name: standard
+        description: Creates private HIVE database for a user in org shared space /user/hive/warehouse/
         free: true
     metadata:
       imageUrl: ${IMAGE_URL:}

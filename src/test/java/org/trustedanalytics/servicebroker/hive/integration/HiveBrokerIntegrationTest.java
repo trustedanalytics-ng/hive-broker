@@ -62,7 +62,7 @@ public class HiveBrokerIntegrationTest {
   @Test
   public void testCreateServiceInstance_success_shouldReturnCreatedInstance() throws Exception {
     CreateServiceInstanceRequest request = getCreateInstanceRequest("instanceId",
-                                                                    "multitenant-plan");
+                                                                    "standard-plan");
     instanceService.createServiceInstance(request);
     ServiceInstance instance = instanceService.getServiceInstance(request.getServiceInstanceId());
     assertThat(instance.getServiceInstanceId(), equalTo("instanceId"));
@@ -72,7 +72,7 @@ public class HiveBrokerIntegrationTest {
   public void testDeleteServiceInstance_success_shouldReturnRemovedInstance() throws Exception {
     ServiceInstance instance =
         instanceService.createServiceInstance(getCreateInstanceRequest("instanceId3",
-                                                                       "multitenant-plan"));
+                                                                       "standard-plan"));
     ServiceInstance removedInstance =
         instanceService.deleteServiceInstance(
             new DeleteServiceInstanceRequest(instance.getServiceInstanceId(),
@@ -85,12 +85,12 @@ public class HiveBrokerIntegrationTest {
   @Test
   public void testCreateInstanceBinding_success_shouldReturnBinding() throws Exception {
     CreateServiceInstanceRequest request = getCreateInstanceRequest("instanceId4",
-                                                                    "multitenant-plan");
+                                                                    "standard-plan");
     instanceService.createServiceInstance(request);
     CreateServiceInstanceBindingRequest bindingRequest =
         new CreateServiceInstanceBindingRequest(
             getServiceInstance("instanceId4").getServiceDefinitionId(),
-            "FAKE-BASE_GUID-multitenant-plan",
+            "FAKE-BASE_GUID-standard-plan",
             "appGuid")
             .withBindingId("bindingId").withServiceInstanceId("instanceId4");
     ServiceInstanceBinding binding =
@@ -102,12 +102,12 @@ public class HiveBrokerIntegrationTest {
   public void testCreateInstanceBindingPlanShared_success_shouldReturnBinding() throws Exception {
     String instanceId = UUID.randomUUID().toString();
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instanceId,
-                                                                    "shared-plan");
+                                                                    "standard-plan");
     instanceService.createServiceInstance(request);
     CreateServiceInstanceBindingRequest bindingRequest =
         new CreateServiceInstanceBindingRequest(getServiceInstance(instanceId)
                                                     .getServiceDefinitionId(),
-                                                "FAKE-BASE_GUID-shared-plan",
+                                                "FAKE-BASE_GUID-standard-plan",
                                                 "appGuid").withBindingId("bindingId")
             .withServiceInstanceId(instanceId);
     ServiceInstanceBinding binding = instanceBindingService.createServiceInstanceBinding(
@@ -118,7 +118,7 @@ public class HiveBrokerIntegrationTest {
   private ServiceInstance getServiceInstance(String id) {
     return new ServiceInstance(
         new CreateServiceInstanceRequest(id,
-                                         "FAKE-BASE_GUID-multitenant-plan",
+                                         "FAKE-BASE_GUID-standard-plan",
                                          "f0487d90-fde6-4da1-a933-03f38776115d",
                                          "spaceGuid")
     );
