@@ -19,8 +19,6 @@ package org.trustedanalytics.servicebroker.hive.integration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-import java.util.UUID;
-
 import org.cloudfoundry.community.servicebroker.model.*;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
@@ -100,7 +98,7 @@ public class HiveBrokerIntegrationTest {
 
   @Test
   public void testCreateInstanceBindingPlanShared_success_shouldReturnBinding() throws Exception {
-    String instanceId = UUID.randomUUID().toString();
+    String instanceId = "instanceId5";
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instanceId,
                                                                     "standard-plan");
     instanceService.createServiceInstance(request);
