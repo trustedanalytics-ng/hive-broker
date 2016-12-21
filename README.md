@@ -1,108 +1,78 @@
-# hive-broker
+hive-broker
+===========
 
-Cloud foundry broker for HIVE.
+Broker for creation databases in Hive.
 
 # How to use it?
-To use hive-broker, you need to build it from sources configure, deploy, create instance and bind it to your app. Follow steps described below.
+To use hive-broker, you need to build it from sources configure, deploy, create instance and bind it to your app. Follow steps described below. 
 
-## Build
-Run command for compile and package.:
+## Build 
+Run command for compile and package.: 
 ```
 mvn clean package
 ```
-
-## Kerberos configuration
-Broker automatically bind to an existing kerberos provide service. This will provide default kerberos configuration, for REALM and KDC host. Before deploy check:
-
-## Deploy
-Push broker binary code to cloud foundry (use cf client).:
+Run optional command for create docker image:
 ```
-cf push hive-broker -p target/hive-broker-*.jar -m 512M -i 1 --no-start
+mvn docker:build
 ```
+
+## Plans
+
+  * Standard : Create private Hive database within storage space shared across your organization
 
 ## Configure
-For strict separation of config from code (twelve-factor principle), configuration must be placed in environment variables.
 
-Broker configuration params list (environment properties):
+###Profiles 
+Each profile describes authentication used during communication with Hadoop, at least one is required: 
 
-* obligatory :
-  * USER_PASSWORD - password to interact with service broker
-  * BASE_GUID - base id for catalog plan creation (uuid)
-  * HADOOP_PROVIDED_ZIP - list of hive configuration parameters exposed by service (json format, default: {})
-  * HIVE_SERVER2_THRIFT_BIND_HOST - hive server2 host address
-  * HIVE_SERVER2_THRIFT_PORT - hive server2 port
-  * SYSTEM_USER - user that has an access to broker store
-  * SYSTEM_USER_PASSWORD - password for SYSTEM_USER
-* optional :
-  * HIVE_SUPERUSER - superuser principal name (user with full permissions on hive server) 
-  * HIVE_SUPERUSER_KEYTAB - base64 encoded keytab for HIVE_SUPERUSER
-  * CF_CATALOG_SERVICENAME - service name in cloud foundry catalog (default: hive)
-  * CF_CATALOG_SERVICEID - service id in cloud foundry catalog (default: hive)
+  * simple
+  * kerberos
+  
+### Broker library
+Broker library is java spring library, which simplifies broker store implementation. Currently hive-broker uses zookeeper-broker store implementation, which stores information about every instance in secured znode.
 
-## Injection of Hive client configuration
-HIVE configuration must be set via HADOOP_PROVIDED_ZIP environment variable. Description of this process is this same as in HDFS broker case ( https://github.com/trustedanalytics/hdfs-broker/ ).
+* obligatory
+  * simple
+    * STORE_CLUSTER : zookeeper quorum address (example: host1:2181,host2:2181,host:2181)
+    * STORE_USER : user used to authenticate with zookeeper broker store
+    * STORE_PASSWORD : password for store user
+  * kerberos
+    * STORE_KEYTABPATH : path to the keytab file, which will be used to authenticate store user in kerberos
 
-## Zookeeper configuration
-Broker instance should be bind with zookeeper broker instance to get zookeeper configuration.
-```
-cf bs <app> <zookeeper-instance>
-```
-and kerberos service instance, only for kerberized environments.
-```
-cf bs <app> <kerberos-instance>
-```
+### Other
+* obligatory
+  * simple
+    * USER_PASSWORD - password to interact with service broker Rest API
+    * BASE_GUID - base id for catalog plan creation
+    * CATALOG_SERVICENAME - service name in catalog (default: hive)
+    * CATALOG_SERVICEID - service id in catalog (default: hive)
+    * SYSTEM_USER : name of the regular user which will be used to create znodes
+    * HIVE_SERVER2_THRIFT_BIND_HOST - hive server2 host address
+    * HIVE_SERVER2_THRIFT_PORT - hive server2 port
+    * HIVE_CONFIGURATION_PATH : path of the hive-conf directory
+    * HIVE_SUPERUSER - superuser principal name (user with full permissions on hive server) 
+  * kerberos
+    * KRB_REALM : Kerberos Realm (kerberos profile required)
+    * KRB_KDC : Key Distribution Center Adddress (kerberos profile required)
+    * HIVE_SUPERUSER_KEYTAB_PATH - path to the keytab file, which will be used to authenticate HIVE_SUPERUSER in kerberos
+    * SYSTEM_USER_KEYTAB_PATH : path to the keytab file, which will be used to authenticate SYSTEM_USER in kerberos
 
-## Start service broker application
 
-Use cf client :
-```
-cf start hive-broker
-```
-## Create new service instance
+## Useful links
 
-Use cf client :
-```
-cf create-service-broker hive-broker <user> <password> https://hive-broker.<platform_domain>
-cf enable-service-access hive
-cf cs hive shared hive-instance
-```
+Offering template for TAP platform:
+ * https://github.com/intel-data/tap-deploy/blob/master/roles/tap-marketplace-offerings/templates/hive/offering.json
 
-## Binding broker instance
+Broker library:
+ * https://github.com/intel-data/broker-lib    
 
-Broker instance can be bind with cf client :
-```
-cf bs <app> hive-instance
-```
-or by configuration in app's manifest.yml :
-```yaml
-  services:
-    - hive-instance
-```
+Cloud foundry resources that are helpful when troubleshooting service brokers : 
+ * http://docs.cloudfoundry.org/services/api.html
+ * http://docs.cloudfoundry.org/devguide/services/managing-services.html#update_service
+ * http://docs.cloudfoundry.org/services/access-control.html
 
-To check if broker instance is bound, use cf client :
-```
-cf env <app>
-```
-and look for :
-```yaml
-  "hive": [
-   {
-    "credentials": {
-     "HADOOP_CONFIG_KEY": {
-      <hive_configuration_json>
-     },
-     "HADOOP_CONFIG_ZIP": {
-      "description": "This is the encoded zip file of hadoop-configuration",
-      "encoded_zip": "<base64 of hive client configuration>"
-     },
-     "connectionUrl": "JDBC connection string ready to use with Jdbc Driver: 
-                       jdbc:hive2://<hive_server2_host>:<hive_server2_port>/<database_name>"
-    },
-    "label": "hive",
-    "name": "hive-instance",
-    "plan": "shared",
-    "tags": []
-   }
-  ]
-```
-in VCAP_SERVICES.
+## On the app side
+
+For spring applications use https://github.com/trustedanalytics/hadoop-spring-utils. 
+
+For regular java applications use https://github.com/trustedanalytics/hadoop-utils. 
