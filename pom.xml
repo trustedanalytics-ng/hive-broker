@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hive-broker</artifactId>
 
-    <version>0.6.5</version>
+    <version>0.6.6</version>
 
     <parent>
         <groupId>org.trustedanalytics</groupId>
@@ -23,6 +23,7 @@
         <jacoco-measurement-lines>0.7800</jacoco-measurement-lines>
         <jacoco-measurement-classes>0.8100</jacoco-measurement-classes>
         <docker.imageName>${project.artifactId}</docker.imageName>
+        <build.time>${maven.build.timestamp}</build.time>
     </properties>
 
     <build>
@@ -33,10 +34,34 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <includeOnlyProperties>
+                        <includeOnlyProperty>^git.tags</includeOnlyProperty>
+                        <includeOnlyProperty>^git.branch</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.*</includeOnlyProperty>
+                    </includeOnlyProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -115,6 +140,10 @@
             <groupId>org.trustedanalytics.servicebroker.repository</groupId>
             <artifactId>broker-store-commons</artifactId>
             <version>0.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
