@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,14 @@
  */
 package org.trustedanalytics.servicebroker.hive.integration.config.kerberos;
 
-import java.sql.Driver;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.trustedanalytics.hadoop.config.client.AppConfiguration;
 import org.trustedanalytics.servicebroker.framework.kerberos.KerberosProperties;
 import org.trustedanalytics.servicebroker.hive.MockedJdbcDriver;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.sql.Driver;
 
 @Configuration
 public class IntegrationTestsConfiguration {

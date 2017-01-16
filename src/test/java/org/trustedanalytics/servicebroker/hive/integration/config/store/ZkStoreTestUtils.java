@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package org.trustedanalytics.servicebroker.hive.integration.config.store;
 
-import java.security.MessageDigest;
+import com.google.common.collect.ImmutableList;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -25,7 +25,7 @@ import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Id;
 import org.springframework.security.crypto.codec.Base64;
 
-import com.google.common.collect.ImmutableList;
+import java.security.MessageDigest;
 
 public class ZkStoreTestUtils {
 

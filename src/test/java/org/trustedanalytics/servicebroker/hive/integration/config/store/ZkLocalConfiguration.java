@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,11 @@
  */
 package org.trustedanalytics.servicebroker.hive.integration.config.store;
 
-import java.io.IOException;
-
-import javax.validation.constraints.NotNull;
+import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClient;
+import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClientBuilder;
+import org.trustedanalytics.servicebroker.framework.Qualifiers;
+import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperCredentials;
+import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperTestOperations;
 
 import org.apache.curator.test.TestingServer;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,11 +27,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClient;
-import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClientBuilder;
-import org.trustedanalytics.servicebroker.framework.Qualifiers;
-import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperCredentials;
-import org.trustedanalytics.servicebroker.test.zookeeper.ZooKeeperTestOperations;
+
+import java.io.IOException;
+
+import javax.validation.constraints.NotNull;
 
 @Configuration
 public class ZkLocalConfiguration {
